@@ -1893,6 +1893,22 @@ static mrb_value mrb_redis_setnx(mrb_state *mrb, mrb_value self)
   return mrb_bool_value(integer == 1);
 }
 
+static mrb_value mrb_redis_quit(mrb_state *mrb, mrb_value self)
+{
+  redisContext *rc = DATA_PTR(self);
+  mrb_value str;
+  redisReply *rs = redisCommand(rc, "QUIT");
+
+  if (rc->err) {
+    mrb_redis_check_error(rc, mrb);
+  }
+
+  str = mrb_str_new(mrb, rs->str, rs->len);
+  freeReplyObject(rs);
+  return str;
+}
+
+
 
 void mrb_mruby_redis_gem_init(mrb_state *mrb)
 {
@@ -1980,6 +1996,7 @@ void mrb_mruby_redis_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, redis, "watch", mrb_redis_watch, (MRB_ARGS_REQ(1) | MRB_ARGS_REST()));
   mrb_define_method(mrb, redis, "unwatch", mrb_redis_unwatch, MRB_ARGS_NONE());
   mrb_define_method(mrb, redis, "setnx", mrb_redis_setnx, MRB_ARGS_REQ(2));
+  mrb_define_method(mrb, redis, "quit", mrb_redis_ping, MRB_ARGS_NONE());
   DONE;
 }
 
