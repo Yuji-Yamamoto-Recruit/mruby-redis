@@ -1996,7 +1996,7 @@ void mrb_mruby_redis_gem_init(mrb_state *mrb)
   mrb_define_method(mrb, redis, "watch", mrb_redis_watch, (MRB_ARGS_REQ(1) | MRB_ARGS_REST()));
   mrb_define_method(mrb, redis, "unwatch", mrb_redis_unwatch, MRB_ARGS_NONE());
   mrb_define_method(mrb, redis, "setnx", mrb_redis_setnx, MRB_ARGS_REQ(2));
-  mrb_define_method(mrb, redis, "quit", mrb_redis_ping, MRB_ARGS_NONE());
+  mrb_define_method(mrb, redis, "quit", mrb_redis_quit, MRB_ARGS_NONE());
   DONE;
 }
 
